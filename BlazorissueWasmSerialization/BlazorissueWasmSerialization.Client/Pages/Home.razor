@@ -1,0 +1,50 @@
+﻿@page "/"
+
+@inject IJSRuntime JSRuntimeInstance
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<div>
+    <button @onclick="OnButtonShowIssueClick">Show issue</button>
+</div>
+<div>
+    <button @onclick="OnButtonShowFixedIssueClick">Show fixed issue</button>
+</div>
+
+@code {
+    public async Task OnButtonShowIssueClick()
+    {
+        var items = new Dictionary<string, string>()
+        {
+            ["key1"] = "value1",
+            ["key2"] = "value2"
+        };
+
+        var data = new Dictionary<string, object>()
+        {
+            ["items"] = items.Select(x => new KeyValuePair<string, string>(x.Key.ToString(), x.Value.ToString())),
+        };
+
+        await JSRuntimeInstance.InvokeVoidAsync("sendData", data);
+    }
+
+    public async Task OnButtonShowFixedIssueClick()
+    {
+        var items = new Dictionary<string, string>()
+        {
+            ["key1"] = "value1",
+            ["key2"] = "value2"
+        };
+
+        var data = new Dictionary<string, object>()
+        {
+            ["items"] = items.Select(x => new { key = x.Key, value = x.Value }),
+        };
+
+        await JSRuntimeInstance.InvokeVoidAsync("sendData", data);
+    }
+}
